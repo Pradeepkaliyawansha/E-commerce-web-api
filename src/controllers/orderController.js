@@ -29,6 +29,7 @@ exports.createOrder = (req, res, next) => {
           .json({ message: `Product with ID ${item.productId} not found` });
       }
 
+      // Check if sufficient quantity is available
       if (product.quantity < item.quantity) {
         return res.status(400).json({
           message: `Insufficient quantity for product ${product.name}. Available: ${product.quantity}, Requested: ${item.quantity}`,
@@ -54,6 +55,7 @@ exports.createOrder = (req, res, next) => {
 };
 
 exports.getAllOrders = (req, res, next) => {
+  // Get all orders from the model
   try {
     const orders = orderModel.getAllOrders();
     return res.status(200).json(orders);
@@ -63,6 +65,7 @@ exports.getAllOrders = (req, res, next) => {
 };
 
 exports.getOrderById = (req, res, next) => {
+  // Extract order ID from request parameters
   try {
     const orderId = req.params.id;
     const order = orderModel.getOrderById(orderId);
@@ -82,6 +85,7 @@ exports.getOrderById = (req, res, next) => {
 exports.cancelOrder = (req, res, next) => {
   try {
     const orderId = req.params.id;
+    // Find order in the database
     const order = orderModel.getOrderById(orderId);
 
     if (!order) {
@@ -122,12 +126,14 @@ exports.cancelOrder = (req, res, next) => {
 
 exports.processNextOrder = (req, res, next) => {
   try {
+    // Get the next order ID from the queue
     const nextOrderId = orderQueue.getNextOrder();
 
     if (!nextOrderId) {
       return res.status(200).json({ message: "No orders in the queue" });
     }
 
+    // Update order status to "processed"
     const processedOrder = orderModel.updateOrderStatus(
       nextOrderId,
       "processed"
