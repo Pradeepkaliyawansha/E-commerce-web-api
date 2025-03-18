@@ -2,6 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const orderRoutes = require("./routes/orderRoutes");
 const errorHandler = require("./middlewares/errorHandler");
+const inventoryModel = require("./models/inventoryModel");
+
+// Initialize inventory with some sample products
+inventoryModel.initializeInventory();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
