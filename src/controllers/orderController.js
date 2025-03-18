@@ -121,3 +121,26 @@ exports.cancelOrder = (req, res, next) => {
   }
   console.log("text");
 };
+
+exports.processNextOrder = (req, res, next) => {
+  try {
+    const nextOrderId = orderQueue.getNextOrder();
+
+    if (!nextOrderId) {
+      return res.status(200).json({ message: "No orders in the queue" });
+    }
+
+    const processedOrder = orderModel.updateOrderStatus(
+      nextOrderId,
+      "processed"
+    );
+    orderQueue.removeOrder(nextOrderId);
+
+    return res.status(200).json({
+      message: "Order processed successfully",
+      order: processedOrder,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
