@@ -36,7 +36,5 @@ exports.updateProductQuantity = (productId, quantityChange) => {
     return inventory[productIndex];
   }
 
-  console.log(inventory[productIndex]);
-
   return null;
 };

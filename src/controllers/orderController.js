@@ -83,7 +83,6 @@ exports.cancelOrder = (req, res, next) => {
   try {
     const orderId = req.params.id;
     const order = orderModel.getOrderById(orderId);
-    console.log(orderId);
 
     if (!order) {
       return res
@@ -119,7 +118,6 @@ exports.cancelOrder = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-  console.log("text");
 };
 
 exports.processNextOrder = (req, res, next) => {

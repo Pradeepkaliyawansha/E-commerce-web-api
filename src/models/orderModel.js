@@ -39,7 +39,6 @@ function createOrder(orderData) {
       error.unavailableProducts = [item.productId];
       throw error;
     }
-    console.log(product);
   }
 
   // Create new order
@@ -59,8 +58,6 @@ function createOrder(orderData) {
     status: "pending",
     createdAt: new Date().toISOString(),
   };
-  console.log(order);
-  console.log(id);
 
   orders.push(order);
   return order;
